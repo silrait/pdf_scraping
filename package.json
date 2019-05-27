@@ -1,0 +1,16 @@
+{
+  "name": "pdf_scraping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "json2csv": "^4.5.1",
+    "pdf2json": "^1.1.8",
+    "underscore": "^1.9.1"
+  }
+}
