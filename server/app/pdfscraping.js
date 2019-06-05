@@ -47,15 +47,52 @@ function genereateCSV(){
 
 pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError) );
 
+// Used for testing
+// pdfParser.on("pdfParser_dataReady", pdfData => {
+//     let process = null;
+
+//     for(let j=78; j<80;j++){
+//         let orderedElements = pdfData.formImage.Pages[j].Texts.sort((a,b) => {
+//             //arrange the text
+//             //Vertically and Horizontally aligned
+//             //It seems the lines aren't perfectly aligned
+//             let cmp = (Math.abs(a.y - b.y) > 0.5)? a.y - b.y : 0;
+//             if(!cmp){
+//                 cmp = a.x - b.x;
+//             }
+
+//             return cmp;
+//         });  
+
+//         for(let i = 0; i < orderedElements.length; i++){
+//             let text = decodeURIComponent(orderedElements[i].R[0].T);   
+            
+//             let foundProcess = text.match(/[0-9]{17}/);
+//             if(foundProcess){
+//                 //start collecting process data
+//                 //Add a new one at very beginning or at every new process
+//                 if(!process || (process && process.number != foundProcess[0])){
+//                     process = new Process(foundProcess[0]);
+//                 }                
+//             }  
+//             console.log(text);
+
+//             //console.log(orderedElements[i]);
+//         }
+//     }
+// });
+
 pdfParser.on("pdfParser_dataReady", pdfData => {
     let process = null;
     let item = null;
 
     for(let j=0; j<pdfData.formImage.Pages.length;j++){
+    // for(let j=78; j<80;j++){        
         let orderedElements = pdfData.formImage.Pages[j].Texts.sort((a,b) => {
             //arrange the text
             //Vertically and Horizontally aligned
-            let cmp = a.y - b.y;
+            //It seems the lines aren't perfectly aligned
+            let cmp = (Math.abs(a.y - b.y) > 0.5)? a.y - b.y : 0;
             if(!cmp){
                 cmp = a.x - b.x;
             }
@@ -70,12 +107,15 @@ pdfParser.on("pdfParser_dataReady", pdfData => {
             let foundProcess = text.match(/[0-9]{17}/);
             if(foundProcess){
                 //start collecting process data
-                process = new Process(foundProcess[0]);
-            }    
+                //Add a new one at very beginning or at every new process
+                if(!process || (process && process.number != foundProcess[0])){
+                    process = new Process(foundProcess[0]);
+                }                
+            }      
 
             let foundNCM = text.match(/\b[0-9]{8}\b/);
             if(foundNCM){
-                let description = decodeURIComponent(orderedElements[i+7].R[0].T);
+                let description = decodeURIComponent(orderedElements[i+6].R[0].T);
                 //Save previous Item and Create a new One
                 if(item && item.isValid()){
                     process.addItem(item); 

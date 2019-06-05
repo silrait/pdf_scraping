@@ -6,7 +6,7 @@ module.exports = class Process {
     }
 
     get number(){
-        return this._number;
+        return this._number.replace(/[.\-\/]/g,'');
     }
 
     get items(){
