@@ -19,8 +19,6 @@ class ChipController {
         });
 
         this._chipInstance = this._initChip();
-        console.log(this);
-        
     }
 
     _viewUpdate(){

@@ -5,6 +5,13 @@ class Colletion {
         this._includeFlag = includeFlag;
     }
 
+    get data(){
+        return {            
+            collection: this._collection,
+            flag: this._includeFlag
+        }
+    }
+
     get title(){
         return this._title;
     }

@@ -1,7 +1,7 @@
 // const validNCM = ['33','37','40','42','48','57','84','85','90','91','92','94','95','96','97'];
-const validNCM = ['220'];
+const validNCM = ['15', '17', '18', '19', '20', '21', '23'];
 // const invalidWords = ['CACA-NIQUEL', 'DISPLAY LCD', 'TELA LCD DE ELETRONICOS', 'BATERIA DE CELULAR', 'CHIFRE', 'ARMA', 'ISQUEIRO', 'CIGARRO', 'PNEU', 'RECEPTOR DE TV A CABO', 'FALSIF', 'CONTRAF', 'PARTES', 'PEÇAS', 'LNBF', 'CAPA', 'TELA', 'PELICULA', 'RECEPTOR DE SATELITE', 'IPTV'];
-const invalidWords = ['VINHO'];
+const invalidWords = [];
 const valueThreshold = 2000.0;
 const cellphoneThreshold = 600.0;
 
@@ -27,12 +27,10 @@ module.exports = class Item {
 
     get amount(){
         return this._amount;
-        //return Number.parseFloat(this._amount);        
     }
 
     get value(){
         return this._value;
-        //return Number.parseFloat(this._value);
     }
 
     toString(){
@@ -43,7 +41,7 @@ module.exports = class Item {
         const isNCM = validNCM.find( n => this._ncm.startsWith(n));
         const isInvalidWord = invalidWords.find( word => this._text.includes(word));
     
-        console.log(`NCM: ${this._ncm}, Descr: ${this._text}, NCM válido? ${isNCM}, contém palavra proibida: ${isInvalidWord}`);        
+        //console.log(`NCM: ${this._ncm}, Descr: ${this._text}, NCM válido? ${isNCM}, contém palavra proibida: ${isInvalidWord}`);        
         //The whole point of this is just these validations...
         //Rule 1. Keep only goods with valid NCM which dos not contain an invalid keyword
         let answer = validNCM.find( n => this._ncm.startsWith(n)) != undefined && 
@@ -51,7 +49,7 @@ module.exports = class Item {
 
         //Rule 2. Remove expansive items
         answer = answer && ( this.value / this.amount ) < valueThreshold;
-        console.log(`**** Value: ${this.value}, Amount: ${this.amount}, Per Unit: ${( this.value / this.amount )}`)
+        // console.log(`**** Value: ${this.value}, Amount: ${this.amount}, Per Unit: ${( this.value / this.amount )}`)
 
         //Rule 3. Value threshold for cellphones are a little lower
         if(this._ncm.startsWith('8517')){

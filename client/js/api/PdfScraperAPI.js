@@ -4,26 +4,27 @@ class PdfScraperAPI {
         this._port = ':3000';
     }
 
-    async apiAxiosTest(binary) {
-        console.log('apiAxiosTest');
-        console.log(binary);
+    async scrape({binary, options}) {
+      return new Promise( (resolve, reject) => {
+        console.log(options);
         const formData = new FormData();
         formData.append('file', binary);
-        formData.append('opt', 'ola');
-
+        formData.append('options', options);
         
-        try {
-          //const response = await axios.get(this._url + this._port + '/pdfscraper');
-          const response = await axios({
-            method: 'post',
-            url: this._url + this._port + '/pdfscraper',
-            headers: {'Content-Type': 'multipart/form-data' },
-            // headers: {'Content-Type': 'application/pdf' },            
-            data: formData,
-          });
-          console.log(response);
-        } catch (error) {
-          console.error(error);
-        }
-      }
+        axios({
+          method: 'post',
+          url: this._url + this._port + '/pdfscraper',
+          responseType: 'blob',
+          headers: {'Content-Type': 'multipart/form-data' },
+          // headers: {'Content-Type': 'application/pdf' },            
+          data: formData,
+        }).then(
+          response => {
+            resolve(response.data)
+          }
+        ).catch (error => {
+          reject(error);
+        })
+      });
+    }
 }

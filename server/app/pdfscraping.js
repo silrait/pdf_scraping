@@ -1,6 +1,6 @@
 'use strict';
-let fs = require('fs'),
-PDFParser = require("pdf2json");
+const fs = require('fs');
+const PDFParser = require("pdf2json");
 const { Parser } = require('json2csv');
 
 const Item = require('./Item.js');

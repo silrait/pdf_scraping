@@ -1,10 +1,21 @@
-/* Código simplório, apenas para fornecer o serviço para a aplicação */
+const PdfScraper = require('../PDFScraper');
+const CSVGenerator = require('../CSVGenerator');
+
 var api = {}
 
-api.scrap = function(req, res) {
-
-   console.log(req);
-   res.status(200).json("PDF received");
+api.parse = function(req, res, next) {  
+   new PdfScraper(req.body.file).parse()
+      .then(processes => {
+         // console.log("E os processos?");
+         // console.log(processes);
+         return new CSVGenerator(processes).generate();
+      })
+      .then(csv => {
+         res.status(200).attachment('result.csv').send(csv);
+      })
+      .catch(error => {
+         console.log(error);      
+      });  
 };
 
 module.exports = api;
